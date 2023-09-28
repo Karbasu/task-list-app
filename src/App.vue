@@ -4,7 +4,10 @@
     <task-creation @add-task="addTask" />
     <div class="task_pending_completed">
       <task-list :tasks="tasks" @remove-task="removeTask" /> 
-    <TaskCompleted :tasks="tasks" /></div>
+    <TaskCompleted :tasks="tasks" />
+    <StatusProgress :tasks="tasks"/>
+  </div>
+      
   </div>
 </template>
 
@@ -12,6 +15,7 @@
 import TaskCompleted from "./components/TaskCompleted.vue";
 import TaskCreation from "./components/TaskCreation.vue";
 import TaskList from "./components/TaskList.vue";
+import StatusProgress from "./components/StatusProgress.vue";
 
 
 export default {
@@ -31,7 +35,8 @@ export default {
   components: {
     TaskCreation,
     TaskList,
-    TaskCompleted
+    TaskCompleted,
+    StatusProgress
 },
 };
 </script>

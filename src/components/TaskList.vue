@@ -6,6 +6,7 @@
           {{ task.title }}
           <button class="delete_button" @click="deleteTask(task.id)">Delete</button>
           <button class="complete_button" @click="markAsCompleted(task)" v-if="!task.completed">Complete</button>
+          <button class="complete_button" @click="markAsProgress(task)" v-if="!task.status">InProgress</button>
         </li>
       </ul>
     </div>
@@ -20,8 +21,15 @@
       },
       markAsCompleted(task) {
         if (!task.completed) {
+          task.status = true;
           task.completed = true;
           task.completionTime = new Date().toLocaleString();
+        }
+      },
+      markAsProgress(task) {
+        if (!task.completed && !task.status) {
+          task.status = true;
+          
         }
       },
     },
