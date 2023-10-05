@@ -1,12 +1,23 @@
 <template>
     <div class="container_task_list">
-      <h2>Pending Task List</h2>
+      <h2>User Task List</h2>
+      <div class="filter-status">
+        <label for="status-filter">Filter by Status:</label>
+        <select  id="status-filter" v-model="selectedStatus">
+          <option value="all">All</option>
+          <option v-for="option in statusOptions" :key="option" :value="option">{{ option }}</option>
+        </select>
+      </div>
+      
       <ul class="task_list">
         <li v-for="task in filteredTasks" :key="task.id">
           {{ task.title }}
-          <button class="delete_button" @click="deleteTask(task.id)">Delete</button>
-          <button class="complete_button" @click="markAsCompleted(task)" v-if="!task.completed">Complete</button>
-          <button class="complete_button" @click="markAsProgress(task)" v-if="!task.status">InProgress</button>
+          <button @click="addCustomStatus(task)">Add Status</button>
+          <select name="status-names" v-model="task.status">
+            
+            <option v-for="option in statusOptions" :key="option" :value="option">{{ option }}</option>
+          </select>
+          <input class='new-status' v-model="newTaskStatus" placeholder="Add Extra Status" />
         </li>
       </ul>
     </div>
@@ -14,33 +25,41 @@
   
   <script>
   export default {
-    props: ['tasks'],
+    props: ['tasks', 'statusOptions'],
+    data() {
+      return {
+        newTaskStatus: "",
+        selectedStatus: "all", 
+      };
+    },
     methods: {
-      deleteTask(taskId) {
-        this.$emit('remove-task', taskId);
-      },
-      markAsCompleted(task) {
-        if (!task.completed) {
-          task.status = true;
-          task.completed = true;
-          task.completionTime = new Date().toLocaleString();
+      addCustomStatus(task) {
+        if (this.newTaskStatus.trim() === "") {
+          alert("Status name cannot be empty.");
+          return;
         }
-      },
-      markAsProgress(task) {
-        if (!task.completed && !task.status) {
-          task.status = true;
-          
-        }
+        task.status = this.newTaskStatus;
+        this.$emit("add-custom-status", this.newTaskStatus);
+        this.newTaskStatus = "";
       },
     },
     computed: {
       filteredTasks() {
-        return this.tasks; 
+        if (this.selectedStatus === "all") {
+          return this.tasks;
+        } else {
+          return this.tasks.filter(task => task.status === this.selectedStatus);
+        }
       },
     },
   };
   </script>
-  <style>
+  
+ 
+  
+
+  
+<style>
     .container_task_list{
         display:flex;
         flex-direction: column;
@@ -81,8 +100,36 @@
         background-color: rgb(225, 62, 62);
         color:white;
     }
+    .task_list >li > button{
+      margin-left: 10px;
+      margin-right:5px ;
+      border:1px solid #b4d5f8;
+      background-color: #d5e1ef;
+      border-radius:10px;
+      flex:1;
+    }
+    .task_list >li > select{
+      margin-right:5px;
+      height:21px;
+      border-radius:10px;
+      flex:1;
+    }
     .task_list >li > button:hover{
         transform: scale(1.05);
     }
+    .status-list{
+      display:flex;
+      flex-direction: row;
+      
+    }
+    .new-status{
+      margin-left:5px;
+      border-radius:10px;
+      flex:1;
+    }
+    #status-filter{
+      margin-left:10px;
+      border-radius: 8px;
+      background-color: #d5e1ef;
+    }
 </style>
-  
