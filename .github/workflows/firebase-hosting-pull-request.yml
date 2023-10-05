@@ -13,5 +13,5 @@ jobs:
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_TASK_LIST_APP_783D3 }}'
-          projectId: task-list-app-783d3
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_TO_DO_LIST_BASU }}'
+          projectId: to-do-list-basu
